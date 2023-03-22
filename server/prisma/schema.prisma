@@ -1,0 +1,18 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model Movie {
+  id          Int     @id @default(autoincrement())
+  title       String? @db.VarChar(255)
+  poster      String? @db.VarChar(255)
+  description String? @db.VarChar(255)
+  director    String? @db.VarChar(255)
+  producer    String? @db.VarChar(255)
+}
