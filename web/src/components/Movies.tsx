@@ -1,29 +1,17 @@
 import { CaretLeft, CaretRight } from "phosphor-react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { Movie } from "./Movie";
 import { api } from "../lib/axios"
+import { MovieContext } from "../App";
 
-interface MoviesProps {
-  find: boolean;
-}
-
-type Movie = {
-  id: number
-  title: string
-  poster: string
-  description: string
-  director: string
-  producer: string
-}[]
-
-function Movies({find}: MoviesProps) {
-  const [ movies, setMovies ] = useState<Movie>([])
+function Movies() {  
+  const { movies, setMovies } = useContext(MovieContext)
 
   useEffect(() => {
     api.get('/movies').then(response => {
       setMovies(response.data)
     })
-  }, [find])
+  }, [])
 
   return (
     <div className="w-full flex">

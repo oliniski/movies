@@ -1,15 +1,21 @@
 import { UpdateIcon } from '@radix-ui/react-icons';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { api } from "../lib/axios"
+import { MovieContext } from "../App";
 
 export function Update () {
   const [updating, setUpdateCatalog] = useState(false)
+  const { setMovies } = useContext(MovieContext)
 
   async function handleUpdateCatalog() {
     try {
       setUpdateCatalog(true)
-      await api.post('/updateCatalog')
-      
+      await api.post('/updateCatalog').then(response => {
+        if (response.status !== 200) return;
+        api.get('/movies').then(response => {
+          setMovies(response.data)
+        })
+      })
     } catch (error) {
       console.log(error)
     } finally {
@@ -24,7 +30,7 @@ export function Update () {
       disabled={updating}
     >
       <UpdateIcon 
-        style={updating ? {animation: 'spin 1s linear infinite' } : {}}
+        className={updating ? "animate-spin" : ""}
       />
         Update Catalog
     </button>      
