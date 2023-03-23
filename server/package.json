@@ -4,18 +4,28 @@
   "description": "",
   "main": "src/server.ts",
   "scripts": {
-    "dev": "tsx watch src/server.ts"
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "lint": "eslint src/ --ext .ts --ext .js",
+    "lint:fix": "eslint src/ --ext .ts --ext .js --fix",
+    "lint:json": "eslint src/ --ext ts --output-file .lint.run.json --format json-standard"
   },
   "author": "Bruno Oliniski",
   "license": "ISC",
   "dependencies": {
+    "@babel/eslint-parser": "^7.16.3",
     "@fastify/cors": "^8.2.1",
     "@prisma/client": "^4.11.0",
+    "@typescript-eslint/eslint-plugin": "5.6",
+    "@typescript-eslint/parser": "5.6",
+    "axios": "^1.3.4",
+    "eslint-config-airbnb-base": "^15.0.0",
     "fastify": "^4.15.0"
   },
   "devDependencies": {
     "@types/node": "^18.15.5",
     "prisma": "^4.11.0",
+    "ts-node": "^10.9.1",
     "tsx": "^3.12.6",
     "typescript": "^5.0.2"
   }

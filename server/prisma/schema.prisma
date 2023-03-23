@@ -9,9 +9,10 @@ datasource db {
 
 model Movie {
   id          Int     @id @default(autoincrement())
+  external_id Int?
   title       String? @db.VarChar(255)
   poster      String? @db.VarChar(255)
-  description String? @db.VarChar(255)
+  description String? @db.LongText()
   director    String? @db.VarChar(255)
   producer    String? @db.VarChar(255)
 
