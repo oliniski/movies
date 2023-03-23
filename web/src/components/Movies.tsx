@@ -3,6 +3,10 @@ import { useEffect, useState } from "react";
 import { Movie } from "./Movie";
 import { api } from "../lib/axios"
 
+interface MoviesProps {
+  find: boolean;
+}
+
 type Movie = {
   id: number
   title: string
@@ -12,32 +16,34 @@ type Movie = {
   producer: string
 }[]
 
-export function Movies() {
-  const [ movie, setMovie ] = useState<Movie>([])
+function Movies({find}: MoviesProps) {
+  const [ movies, setMovies ] = useState<Movie>([])
 
   useEffect(() => {
     api.get('/movies').then(response => {
-      setMovie(response.data)
+      setMovies(response.data)
     })
-  }, [])
+  }, [find])
 
   return (
     <div className="w-full flex">
       <button title="Previous" className="rounded-full px-5 py-0 items-center active:text-tomato11">
           <CaretLeft />
         </button>
-        
       <div className="grid grid-rows-1 grid-cols-10 gap-5">
-        <Movie />
-        <Movie />
-        <Movie />
-        <Movie />
-        <Movie />
-        <Movie />
-        <Movie />
-        <Movie />
-        <Movie />
-        <Movie />
+        {movies.map((movie) => {
+          return (
+            <Movie
+              key={movie.id}
+              title={movie.title}
+              poster={movie.poster}
+              description={movie.description}
+              producer={movie.producer}
+              director={movie.director}
+            />
+          
+        )})}
+        
       </div>
         <button title="Next" className="rounded-full px-5 py-3 items-center active:text-tomato11">
           <CaretRight />
@@ -45,3 +51,5 @@ export function Movies() {
     </div>
   )
 }
+
+export { Movies }
