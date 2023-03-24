@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable no-undef */
 const { violet, blackA, tomato, green, mauve, slate } = require('@radix-ui/colors');
-
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -22,5 +23,7 @@ module.exports = {
       }
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/line-clamp'),
+  ],
 }
