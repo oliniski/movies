@@ -25,11 +25,9 @@ function App() {
   
   return (
     <MovieContext.Provider value={{movies, setMovies}}>
-
       <div className='w-screen h-screen flex justify-center items-center'>
         <div className="w-full max-w-full px-6 flex flex-col gap-16">
           <Header />
-          
           <Movies />
         </div>
       </div>

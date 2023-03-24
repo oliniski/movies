@@ -12,7 +12,7 @@ export function Update () {
       setUpdateCatalog(true)
       await api.post('/updateCatalog').then(response => {
         if (response.status !== 200) return;
-        api.get('/movies').then(response => {
+        api.get('/movies', { params: { page: 0 }}).then(response => {
           setMovies(response.data)
         })
       })

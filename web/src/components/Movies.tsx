@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { Movie } from "./Movie";
 import { api } from "../lib/axios"
 import { MovieContext } from "../App";
+import notFound from "../assets/not-found.gif"
 
 function Movies() {  
   const { movies, setMovies } = useContext(MovieContext)
@@ -10,14 +11,14 @@ function Movies() {
 
   function handlePreviousPage() {
     if (page === 0) {
-      setPage(9)
+      setPage(4)
       return
     }
     setPage(page - 1)
   }
 
   function handleNextPage() {
-    if (page === 9) {
+    if (page === 4) {
       setPage(0)
       return
     }
@@ -42,7 +43,19 @@ function Movies() {
         <CaretLeft />
       </button>
       <div className="flex flex-wrap gap-5 items-start justify-center max-w-[1100px] m-auto">
-        {movies.map((movie) => {
+        { movies.length === 0 &&
+          <div>
+            <p className="text-center mb-3">
+              Nope, nothing here yet!
+            </p>
+            <img src={notFound} />
+            <p className="text-center mt-3">
+            Update the catalog for the best movies!
+            </p>
+          </div>
+        }
+        
+        {movies?.map((movie) => {
           return (
             <Movie
               key={movie.id}
