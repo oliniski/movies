@@ -1,3 +1,5 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { z } from 'zod';
 import { FastifyInstance } from 'fastify';
 import { prisma } from '../../prisma';
 import { api } from './axios';
@@ -25,15 +27,37 @@ interface GetMovieCrew {
 }
 
 export async function appRoutes(app: FastifyInstance) {
-  app.get('/movies', () => prisma.movie.findMany({ take: 10 }));
+  app.get('/movies', async (request, reply) => {
+    const getMovieParams = z.object({
+      page: z.string(),
+    });
+
+    const { page } = getMovieParams.parse(request.query);
+
+    const skip = parseInt(page, 10) * 10;
+
+    const movies = await prisma.movie.findMany({ skip, take: 10 });
+    reply.send(movies);
+  });
 
   app.post('/updateCatalog', async (_request, reply) => {
     try {
-      const randomPage = Math.floor(Math.random() * (500 - 0 + 1)) + 0;
-      const response = await api.get<GetMoviesResponse>(`${process.env.MOVIE_API_BASE_URL}/popular?&page=${randomPage}`);
-      const { results } = response.data;
+      const movies:Movie[] = [];
 
-      const values = await Promise.all(results.map(async (result) => {
+      do {
+        const randomPage = Math.floor(Math.random() * (500 - 0 + 1)) + 0;
+        // eslint-disable-next-line no-await-in-loop
+        const response = await api.get<GetMoviesResponse>(`${process.env.MOVIE_API_BASE_URL}/popular?&page=${randomPage}`);
+        const { results } = response.data;
+
+        results.forEach((result) => {
+          movies.push(result);
+        });
+      } while (movies.length < 50);
+
+      movies.slice(0, 10);
+
+      const values = await Promise.all(movies.map(async (result) => {
         const { data } = await api.get<GetMovieCrew>(
           `${process.env.MOVIE_API_BASE_URL}/${result.id}?append_to_response=credits`,
         );
