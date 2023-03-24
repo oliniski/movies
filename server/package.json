@@ -4,6 +4,7 @@
   "description": "",
   "main": "src/server.ts",
   "scripts": {
+    "start": "ts-node src/server.ts",
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
     "lint": "eslint src/ --ext .ts --ext .js",

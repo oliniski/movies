@@ -55,9 +55,9 @@ export async function appRoutes(app: FastifyInstance) {
         });
       } while (movies.length < 50);
 
-      movies.slice(0, 10);
+      const slicedMovies = movies.slice(0, -10);
 
-      const values = await Promise.all(movies.map(async (result) => {
+      const values = await Promise.all(slicedMovies.map(async (result) => {
         const { data } = await api.get<GetMovieCrew>(
           `${process.env.MOVIE_API_BASE_URL}/${result.id}?append_to_response=credits`,
         );
